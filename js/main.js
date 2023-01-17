@@ -12,6 +12,10 @@ const wordDisplay = document.querySelector('.word-display');
 const scoreDisplay = document.querySelector('.score');
 const timeDisplay = document.querySelector('.time');
 const button = document.querySelector('.button');
+const myScore = document.querySelector('.my-score');
+const scoreBoard = document.querySelector('.score-board');
+const yesBtn = document.querySelector('.yes-btn');
+const noBtn = document.querySelector('.no-btn');
 
 init();
 
@@ -19,6 +23,11 @@ function init() {
     buttonChange('게임 로딩 중...');
     getWords();
     wordInput.addEventListener('input', checkMatch);
+    yesBtn.addEventListener('click', () => {
+        run(); 
+        scoreBoard.classList.toggle('hidden-score');
+    });
+    noBtn.addEventListener('click', () => scoreBoard.classList.toggle('hidden-score'));
 }
 
 
@@ -30,7 +39,6 @@ function run() {
     isPlaying = true;
     time = GAME_TIME;
     wordInput.focus();
-    scoreDisplay.innerText = 0;
     timeInterval = setInterval(countDown, 1000);
     checkInterval = setInterval(checkStatus, 50);
     buttonChange('게임중');
@@ -54,7 +62,6 @@ function getWords () {
             words.push(word);
         }
     })
-    console.log(words);
     buttonChange('게임시작');
   })
   .catch(function (error) {
@@ -90,8 +97,14 @@ function countDown() {
     time > 0 ? time-- : isPlaying = false;
     if(!isPlaying){
         clearInterval(timeInterval);
+        myScore.innerText = score;
+        scoreDisplay.innerText = 0;
+        scoreBoard.classList.toggle('hidden-score')
+        score = 0;
+        
     }
     timeDisplay.innerText = time;
+    
 }
 
 
